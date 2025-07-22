@@ -27,7 +27,7 @@ int main()
 			m_w = 0xABABAB55;
 			m_z = 0x05080902;
 
-			Cache L2(128 * 1024, blockSize, 8, 10, 50, nullptr);
+			Cache L2(128 * 1024, 64, 8, 10, 50, nullptr);
 			Cache L1(16 * 1024, blockSize, 4, 1, 0, &L2);
 
 			int totalCycles = 0;
@@ -44,9 +44,9 @@ int main()
 					double r = getRandomDouble();
 					// 50% chance of store, 50% load
 					if (r < WRITE_PROB)
-						totalCycles += L1.access(addr, MemOp::STORE);
-					else
 						totalCycles += L1.access(addr, MemOp::LOAD);
+					else
+						totalCycles += L1.access(addr, MemOp::STORE);
 				}
 				else
 				{
